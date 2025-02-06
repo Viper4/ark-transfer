@@ -4,7 +4,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 import pathlib
 
 
-def save_world(ark_path="C:\\Program Files (x86)\\Steam\\steamapps\\common\\ARK\\ShooterGame\\Saved"):
+def save_world():
     map_path = f"{ark_path}\\{map_name}SavedArksLocal"
     if not os.path.exists(map_path):
         print("Path doesn't exist: " + map_path)
@@ -103,12 +103,17 @@ players = {
 # Press the green play button in the gutter to run the script.
 if __name__ == '__main__':
     user_input = ""
+
+    ark_path = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\ARK\\ShooterGame\\Saved"
+    if not os.path.exists("C:\\Program Files (x86)\\Steam\\steamapps\\common\\ARK\\ShooterGame\\Saved"):
+        ark_path = input("Couldn't find ark game files folder. Enter the path of your ark game (usually ends with ...\\ARK\\ShooterGame\\Saved)")
+
     while user_input != "e" and user_input != "exit" and user_input != "quit":
-        print()
         print("Map #s:")
         for i in range(len(map_names)):
             print(f"{i}: {map_names[i]}")
         map_name = map_names[int(input("Enter # of map to save/load: "))]
+
         dump_path = f"C:\\Users\\{os.getlogin()}\\Documents\\ArkTransfer"
         if not os.path.exists(dump_path):
             os.makedirs(dump_path)
@@ -122,4 +127,5 @@ if __name__ == '__main__':
                 print(f" {i}: {player_names[i]}")
 
             index = int(input("Enter # of player to transfer ownership to: "))
-            load_world(players[player_names[index]])
+            if input(f"Are you sure? This will erase everything in your {map_name} save folder. (y/n): ") == "y":
+                load_world(players[player_names[index]])
